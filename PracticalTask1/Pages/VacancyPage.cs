@@ -1,4 +1,5 @@
 using OpenQA.Selenium;
+using PracticalTask1.Config;
 
 namespace PracticalTask1.Pages;
 
@@ -14,5 +15,5 @@ public sealed class VacancyPage : BasePage
     public string BodyText => Driver.FindElement(PageBody).Text;
 
     public bool WaitForText(string text) =>
-        WaitFor(() => BodyText.Contains(text, StringComparison.OrdinalIgnoreCase), TimeSpan.FromSeconds(20));
+        WaitFor(() => BodyText.Contains(text, StringComparison.OrdinalIgnoreCase), TimeSpan.FromSeconds(ConfigReader.TimeoutSeconds));
 }

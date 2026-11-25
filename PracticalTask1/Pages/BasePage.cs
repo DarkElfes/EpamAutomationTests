@@ -1,11 +1,12 @@
 using OpenQA.Selenium;
+using PracticalTask1.Config;
 using OpenQA.Selenium.Support.UI;
 
 namespace PracticalTask1.Pages;
 
 public abstract class BasePage
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(20);
+    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(ConfigReader.TimeoutSeconds);
     private static readonly TimeSpan CookieBannerTimeout = TimeSpan.FromSeconds(5);
 
     // Same cookie banner (OneTrust) on epam.com and careers.epam.com

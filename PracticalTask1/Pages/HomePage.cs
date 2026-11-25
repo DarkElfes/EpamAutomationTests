@@ -1,4 +1,5 @@
 using OpenQA.Selenium;
+using PracticalTask1.Config;
 
 namespace PracticalTask1.Pages;
 
@@ -6,14 +7,11 @@ public sealed class HomePage(
     IWebDriver driver
     ) : BasePage(driver)
 {
-    private const string Url = "https://www.epam.com/";
-
     private static readonly By CareersLink = By.LinkText("Careers");
-
 
     public HomePage Open()
     {
-        Driver.Navigate().GoToUrl(Url);
+        Driver.Navigate().GoToUrl(ConfigReader.BaseUrl);
         return this;
     }
 
