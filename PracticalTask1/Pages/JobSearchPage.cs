@@ -2,32 +2,28 @@ using OpenQA.Selenium;
 
 namespace PracticalTask1.Pages;
 
-public sealed class JobSearchPage : BasePage
+public sealed class JobSearchPage(
+    IWebDriver driver
+    ) : BasePage(driver)
 {
     private const string RemoteFilterInUrl = "vacancy_type=remote";
     private static readonly TimeSpan FilterApplyTimeout = TimeSpan.FromSeconds(1);
 
-    private static readonly By SearchForm = By.CssSelector("form[aria-label='form']");                        // CSS
-    private static readonly By LocationField = By.ClassName("dropdown__input");                               // ClassName (inside SearchForm)
-    private static readonly By KeywordInput = By.Name("search");                                              // Name
-    private static readonly By RemoteCheckbox = By.Name("vacancy_type-Remote");                               // Name
-    private static readonly By RemoteCheckboxLabel =
-        By.XPath("//input[@name='vacancy_type-Remote']/following-sibling::label");                            // XPath with axes
-    private static readonly By SearchButton = By.XPath("//button[@name='submit_search_box_button']");         // XPath (relative)
-    private static readonly By ResultCards = By.CssSelector("div[class^='List_list'] > div");                 // CSS
-    private static readonly By LastResultCard = By.CssSelector("div[class^='List_list'] > div:last-child");   // CSS with pseudo-class
-    private static readonly By CardTitleLink = By.XPath(".//a[@data-testid='job-card-link']");               // XPath (relative, from the card)
+    private static readonly By SearchForm = By.CssSelector("form[aria-label='form']");
+    private static readonly By LocationField = By.ClassName("dropdown__input");
+    private static readonly By KeywordInput = By.Name("search");
+    private static readonly By RemoteCheckbox = By.Name("vacancy_type-Remote");
+    private static readonly By RemoteCheckboxLabel = By.XPath("//input[@name='vacancy_type-Remote']/following-sibling::label");
+    private static readonly By SearchButton = By.XPath("//button[@name='submit_search_box_button']");
+    private static readonly By ResultCards = By.CssSelector("div[class^='List_list'] > div");
+    private static readonly By LastResultCard = By.CssSelector("div[class^='List_list'] > div:last-child");
+    private static readonly By CardTitleLink = By.XPath(".//a[@data-testid='job-card-link']");
 
     private string _keyword = string.Empty;
 
-    public JobSearchPage(IWebDriver driver) : base(driver)
-    {
-    }
-
     public bool IsRemoteSelected => Driver.FindElement(RemoteCheckbox).Selected;
 
-    private static By LocationOption(string location) =>
-        By.XPath($"//div[contains(@class,'dropdown__option') and normalize-space(.)='{location}']");          // XPath with operator
+    private static By LocationOption(string location) => By.XPath($"//div[contains(@class,'dropdown__option') and normalize-space(.)='{location}']");
 
     public JobSearchPage SelectLocation(string location)
     {
@@ -77,7 +73,6 @@ public sealed class JobSearchPage : BasePage
         Wait.Until(d => d.FindElements(ResultCards).Count > 0);
         var lastCard = WaitVisible(LastResultCard);
         Click(() => lastCard.FindElement(CardTitleLink));
-        SwitchToNewestWindow();
         return new VacancyPage(Driver);
     }
 

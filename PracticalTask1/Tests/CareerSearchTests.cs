@@ -1,13 +1,10 @@
-using OpenQA.Selenium;
 using PracticalTask1.Drivers;
 using PracticalTask1.Pages;
 
 namespace PracticalTask1.Tests;
 
-public sealed class CareerSearchTests : IDisposable
+public sealed class CareerSearchTests : BaseTest
 {
-    private readonly IWebDriver _driver = DriverFactory.CreateChrome();
-
     [Theory]
     [InlineData("All available countries", "Java")]
     [InlineData("All available countries", "Python")]
@@ -15,7 +12,7 @@ public sealed class CareerSearchTests : IDisposable
     {
         try
         {
-            HomePage homePage = new HomePage(_driver)
+            HomePage homePage = new HomePage(Driver)
                 .Open()
                 .AcceptCookies();
 
@@ -25,7 +22,7 @@ public sealed class CareerSearchTests : IDisposable
             jobSearchPage
                 .SelectLocation(location)
                 .EnterKeyword(language)
-                .Search()               // before Remote: the filter panel refreshes after a search
+                .Search()
                 .SelectRemote();
 
             Assert.True(jobSearchPage.IsRemoteSelected, "The 'Remote' filter is not selected.");
@@ -36,14 +33,9 @@ public sealed class CareerSearchTests : IDisposable
         }
         catch
         {
-            Diagnostics.Save(_driver, $"{location}_{language}");
+            Diagnostics.Save(Driver, $"{location}_{language}");
+            Dispose();
             throw;
         }
-    }
-
-    public void Dispose()
-    {
-        _driver.Quit();
-        _driver.Dispose();
     }
 }

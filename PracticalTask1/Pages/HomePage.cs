@@ -2,15 +2,14 @@ using OpenQA.Selenium;
 
 namespace PracticalTask1.Pages;
 
-public sealed class HomePage : BasePage
+public sealed class HomePage(
+    IWebDriver driver
+    ) : BasePage(driver)
 {
     private const string Url = "https://www.epam.com/";
 
-    private static readonly By CareersLink = By.LinkText("Careers");    // LinkText
+    private static readonly By CareersLink = By.LinkText("Careers");
 
-    public HomePage(IWebDriver driver) : base(driver)
-    {
-    }
 
     public HomePage Open()
     {

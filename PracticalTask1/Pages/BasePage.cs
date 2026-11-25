@@ -9,7 +9,7 @@ public abstract class BasePage
     private static readonly TimeSpan CookieBannerTimeout = TimeSpan.FromSeconds(5);
 
     // Same cookie banner (OneTrust) on epam.com and careers.epam.com
-    private static readonly By AcceptCookiesButton = By.Id("onetrust-accept-btn-handler");    // ID
+    private static readonly By AcceptCookiesButton = By.Id("onetrust-accept-btn-handler");
 
     protected BasePage(IWebDriver driver)
     {
@@ -18,7 +18,7 @@ public abstract class BasePage
         Wait.IgnoreExceptionTypes(
             typeof(NoSuchElementException),
             typeof(StaleElementReferenceException),
-            typeof(ElementNotInteractableException));    // includes ElementClickInterceptedException
+            typeof(ElementNotInteractableException));
     }
 
     protected IWebDriver Driver { get; }
@@ -48,11 +48,6 @@ public abstract class BasePage
             return element.Displayed ? element : null;
         });
 
-    /// <summary>
-    /// Selenium's Click() already scrolls the element into view and checks that it can be clicked,
-    /// but it fails at once if something (an animated banner, a re-render) covers the element.
-    /// So the click is retried until it succeeds or the timeout ends.
-    /// </summary>
     protected void Click(By by) => Click(() => Driver.FindElement(by));
 
     protected void Click(Func<IWebElement> findElement) =>
@@ -71,15 +66,6 @@ public abstract class BasePage
         catch (WebDriverTimeoutException)
         {
             return false;
-        }
-    }
-
-    protected void SwitchToNewestWindow()
-    {
-        var handles = Driver.WindowHandles;
-        if (handles.Count > 1)
-        {
-            Driver.SwitchTo().Window(handles[^1]);
         }
     }
 }
